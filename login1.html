@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackit Login</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        /* Define colors and fonts, reusing dashboard variables */
+        :root {
+            --primary-blue: black; 
+            --dark-text: #333;
+            --medium-text: #666;
+            --light-bg: #f5f5f5; 
+            --card-bg: #ffffff;
+            --border-light: #e0e0e0;
+            --font-family: Poppins;
+            --screen-height: 100vh;
+        }
+
+        /* Basic Reset and Layout Setup */
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            /* Center content vertically and horizontally */
+            min-height: var(--screen-height);
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Changed from flex-start to center for login page */
+            /* position: fixed; */
+        }
+
+        .main {
+            /* Main container width (e.g., a phone screen width) */
+            /* position: fixed; */
+            width: 90%;
+            max-width: 420px; 
+            background-color: var(--card-bg);
+            padding: 40px 24px; /* Increased padding for a more central form look */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            text-align: center;
+        }
+
+        /* --- 1. Header/Logo Section --- */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .logoDiv {
+            width: 60px; /* Larger logo for the login screen */
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo {
+            width: 100%;
+            height: auto;
+        }
+
+        .appName {
+            font-size: 2rem;
+            font-weight: 700;
+            color: black;
+            margin-top: 26px;
+        }
+
+        .loginText {
+            font-size: 1.1rem;
+            color: var(--medium-text);
+            margin-top: -10px;
+        }
+
+        /* --- 2. Form Styling --- */
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            background-color: var(--card-bg);
+        }
+
+        .forgot-password {
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            text-align: right;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* --- 3. Button Styling (Reusing .addInfoExpense style) --- */
+        .loginButton {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--primary-blue);
+            color: white;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .loginButton:hover {
+            background-color: #0056b3;
+        }
+
+        .signup-link {
+            font-size: 1rem;
+            color: var(--dark-text);
+            margin-top: 20px;
+        }
+
+        .signup-link a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="main">
+
+        <div class="header">
+            <div class="logoDiv">
+                <img src="Group 5.svg" alt="" class="logo">
+            </div>
+
+            <div class="appName">
+                Trackit
+            </div>
+            <div class="loginText">
+                And stay tuned...
+            </div>
+        </div>
+
+        <form>
+
+            <div class="form-group">
+                <input type="text" id="username" class="input-field" placeholder="Username" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="password" class="input-field" placeholder="Password" required>
+            </div>
+            
+            <!-- <a href="#" class="forgot-password">Forgot Password?</a> -->
+
+            <button type="submit" class="loginButton">
+                Sign In
+            </button>
+        </form>
+        
+        <!-- <div class="signup-link">
+            Don't have an account? <a href="#">Sign Up</a>
+        </div> -->
+
+    </div>
+</body>
+</html>
