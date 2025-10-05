@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackit</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        /* Define colors and fonts */
+        :root {
+            --primary-blue: #007bff; /* Main brand color for balance card, buttons */
+            --dark-text: #333;
+            --medium-text: #666;
+            --light-bg: #f5f5f5; /* Off-white page background */
+            --card-bg: #ffffff;
+            --success-green: #28a745;
+            --danger-red: #dc3545;
+            --border-light: #e0e0e0;
+            --font-family: Poppins;
+            --screen-height: 100vh; /* Will be scaled to mobile dimensions */
+        }
+
+        /* Basic Reset and Layout Setup */
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            /* Simulate the 1080px tall mobile frame */
+            min-height: var(--screen-height);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .main {
+            /* Main container width (e.g., a phone screen width) */
+            width: 100%;
+            max-width: 420px; 
+            background-color: var(--card-bg);
+            padding: 24px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            min-height: var(--screen-height); 
+            box-sizing: border-box;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* --- 1. Header Section --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+
+        .logo, .threeBar {
+            /* Placeholder for icons/logos */
+            width: 24px;
+            height: 24px;
+            background-color: var(--medium-text);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .appName {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        /* --- 2. Current Balance Card --- */
+        .indexCurBal {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .indexCurBalText {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+
+        .indexCurBalAmount {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        /* --- 3. Monthly Expense Statistics --- */
+        .monthlyExpenseStatText {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .monthlyExpenseStatCategory {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .monthlyExpenseStatCategory:last-of-type {
+            border-bottom: none;
+        }
+
+        .monthlyExpenseStatCategoryLogo {
+            /* Placeholder for category icon (e.g., Groceries icon) */
+            width: 40px;
+            height: 40px;
+            min-width: 40px; /* Prevent shrinking */
+            border-radius: 8px;
+            background-color: var(--light-bg); /* Placeholder background */
+            margin-right: 15px;
+        }
+        
+        /* Specific coloring for Groceries (first category placeholder) */
+        .monthlyExpenseStatCategory:nth-child(2) .monthlyExpenseStatCategoryLogo {
+            background-color: #f7e0e0; 
+        }
+        
+        /* Specific coloring for Utilities (second category placeholder) */
+        .monthlyExpenseStatCategory:nth-child(3) .monthlyExpenseStatCategoryLogo {
+            background-color: #e0f7e0; 
+        }
+
+        .monthlyExpenseStatCategoryBody {
+            flex-grow: 1;
+        }
+
+        .monthlyExpenseStatCategoryBodyCategoryName {
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--dark-text);
+            /* Placeholder Text */
+        }
+
+        .monthlyExpenseStatCategoryBodyRemainingAmount {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--success-green); /* Example: Success color */
+            margin-top: 2px;
+        }
+
+        /* Override for a 'used up' category (Rent/Danger) */
+        .monthlyExpenseStatCategory:nth-child(4) .monthlyExpenseStatCategoryBodyRemainingAmount {
+            color: var(--danger-red);
+        }
+
+        .monthlyExpenseStatCategoryBodyBar {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .monthlyExpenseCategoryBodyAllotedMoney {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--medium-text);
+            width: 40px; /* Fixed width for the budget amount */
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .monthlyExpenseCategoryBodyLineBar {
+            flex-grow: 1;
+            height: 6px;
+            background-color: var(--border-light);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .monthlyExpenseCategoryBodyLineBar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: var(--primary-blue);
+            border-radius: 3px;
+            /* Placeholder: 80% used for the bar */
+            width: 80%; 
+        }
+
+        /* Specific bar width adjustments for visual representation */
+        .monthlyExpenseStatCategory:nth-child(3) .monthlyExpenseCategoryBodyLineBar::before {
+            width: 30%; /* Utilities: 30% used */
+            background-color: var(--success-green);
+        }
+        .monthlyExpenseStatCategory:nth-child(4) .monthlyExpenseCategoryBodyLineBar::before {
+            width: 100%; /* Rent: 100% used (Danger) */
+            background-color: var(--danger-red);
+        }
+
+
+        /* --- 4. Add Info Buttons --- */
+        .addInfo {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 420px;
+            padding: 24px;
+            box-sizing: border-box;
+            background: linear-gradient(to top, var(--card-bg), var(--card-bg) 80%, rgba(255,255,255,0));
+            z-index: 10;
+        }
+
+        .addInfoIncomeAndSavings {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .addInfoIncome,
+        .addInfoSavings {
+            flex-grow: 1;
+            padding: 15px 10px;
+            border-radius: 8px;
+            background-color: var(--medium-text);
+            color: white;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .addInfoExpense {
+            width: 100%;
+            padding: 18px;
+            border-radius: 8px;
+            background-color: var(--primary-blue);
+            color: white;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+
+        <div class="header">
+            <div class="logoDiv">
+                <img src="Group 4.svg" class="logo">
+            </div>
+
+            <div class="appName">
+                Trackit
+            </div>
+
+            <div class="threeBar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M96 160C96 142.3 110.3 128 128 128L512 128C529.7 128 544 142.3 544 160C544 177.7 529.7 192 512 192L128 192C110.3 192 96 177.7 96 160zM96 320C96 302.3 110.3 288 128 288L512 288C529.7 288 544 302.3 544 320C544 337.7 529.7 352 512 352L128 352C110.3 352 96 337.7 96 320zM544 480C544 497.7 529.7 512 512 512L128 512C110.3 512 96 497.7 96 480C96 462.3 110.3 448 128 448L512 448C529.7 448 544 462.3 544 480z"/></svg>
+            </div>
+        </div>
+
+
+        <div class="indexCurBal">
+
+            <div class="indexCurBalText">
+                My Wallet
+            </div>
+
+            <div class="indexCurBalAmount">
+                $2,567.89
+            </div>
+
+        </div>
+
+        <div class="monthlyExpenseStat">
+
+            <div class="monthlyExpenseStatText">
+                Expense Categories
+            </div>
+
+            <!-- Groceries Category -->
+            <div class="monthlyExpenseStatCategory">
+
+                <div class="monthlyExpenseStatCategoryLogo">
+                    <!-- Icon Placeholder -->
+                </div>
+
+                <div class="monthlyExpenseStatCategoryBody">
+
+                    <div class="monthlyExpenseStatCategoryBodyCategoryName">
+                        Groceries
+                    </div>
+
+                    <div class="monthlyExpenseStatCategoryBodyRemainingAmount">
+                        Remaining $120.00
+                    </div>
+
+                    <div class="monthlyExpenseStatCategoryBodyBar">
+
+                        <div class="monthlyExpenseCategoryBodyAllotedMoney">
+                            $500.00
+                        </div>
+
+                        <div class="monthlyExpenseCategoryBodyLineBar">
+                            <!-- Progress Bar -->
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+            
+            <!-- Utilities Category -->
+            <div class="monthlyExpenseStatCategory">
+
+                <div class="monthlyExpenseStatCategoryLogo">
+                    <!-- Icon Placeholder -->
+                </div>
+
+                <div class="monthlyExpenseStatCategoryBody">
+
+                    <div class="monthlyExpenseStatCategoryBodyCategoryName">
+                        Utilities
+                    </div>
+
+                    <div class="monthlyExpenseStatCategoryBodyRemainingAmount">
+                        Remaining $50.00
+                    </div>
+
+                    <div class="monthlyExpenseStatCategoryBodyBar">
+
+                        <div class="monthlyExpenseCategoryBodyAllotedMoney">
+                            $150.00
+                        </div>
+
+                        <div class="monthlyExpenseCategoryBodyLineBar">
+                            <!-- Progress Bar -->
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+            
+            <!-- Rent Category -->
+            <div class="monthlyExpenseStatCategory">
+
+                <div class="monthlyExpenseStatCategoryLogo">
+                    <!-- Icon Placeholder -->
+                </div>
+
+                <div class="monthlyExpenseStatCategoryBody">
+
+                    <div class="monthlyExpenseStatCategoryBodyCategoryName">
+                        Rent
+                    </div>
+
+                    <div class="monthlyExpenseStatCategoryBodyRemainingAmount">
+                        Remaining $0.00
+                    </div>
+
+                    <div class="monthlyExpenseStatCategoryBodyBar">
+
+                        <div class="monthlyExpenseCategoryBodyAllotedMoney">
+                            $1200.00
+                        </div>
+
+                        <div class="monthlyExpenseCategoryBodyLineBar">
+                            <!-- Progress Bar -->
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+        
+        <!-- Add a spacer to ensure the content doesn't get covered by the fixed button bar -->
+        <div style="height: 150px;"></div>
+
+
+        <div class="addInfo">
+
+            <div class="addInfoIncomeAndSavings">
+
+                <div class="addInfoIncome">
+                    + Add Income
+                </div>
+
+                <div class="addInfoSavings">
+                    Add Savings
+                </div>
+
+            </div>
+
+            <div class="addInfoExpense">
+                + Add Expense
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
