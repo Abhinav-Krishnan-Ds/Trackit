@@ -25,16 +25,19 @@
             padding: 0;
             background-color: var(--light-bg);
             /* Center content vertically and horizontally */
-            min-height: var(--screen-height);
+            
+            /* --- FIX: Set explicit height and hide overflow --- */
+            height: var(--screen-height); /* Ensure body takes up full viewport height */
+            overflow: hidden; /* Prevents any scrolling on the body */
+            /* ------------------------------------------------ */
+            
             display: flex;
             justify-content: center;
-            align-items: center; /* Changed from flex-start to center for login page */
-            /* position: fixed; */
+            align-items: center; 
         }
 
         .main {
             /* Main container width (e.g., a phone screen width) */
-            position: fixed;
             width: 90%;
             max-width: 420px; 
             background-color: var(--card-bg);
